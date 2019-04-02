@@ -1,0 +1,3 @@
+rootProject.name = 'LearnolotlNative'
+
+include ':app'
