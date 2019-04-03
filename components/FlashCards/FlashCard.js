@@ -13,64 +13,47 @@ export default class FlashCard extends Component<Props> {
     constructor(props) {
         super(props);
 
+        this.buildTranslationButtons = this.buildTranslationButtons.bind(this);
         this.handlePressButton = this.handlePressButton.bind(this);
-        this.buildTranslation = this.buildTranslation.bind(this);
         
         this.state = {
-            label: 'english',
             translation: ''    
         };
     }
 
     render() {
-        const romajiButtonData = {
-                id: 'romaji',
-                title: 'Romaji',
-                handlePressButton: this.handlePressButton,
-            },
-            hiraganaButtonData = {
-                id: 'hiragana',
-                title: 'Hiragana',
-                handlePressButton: this.handlePressButton,
-            },
-            katakanaButtonData = {
-                id: 'katakana',
-                title: 'Katakana',
-                handlePressButton: this.handlePressButton,
-            },
-            translation = this.buildTranslation()
+        const translationButtons = this.buildTranslationButtons(),
+            translation = this.state.translation;
 
         return (
             <View>
-                <Text>Excuse me</Text>
                 <Text>{translation}</Text>
-                <DefaultButton {...romajiButtonData}/>
-                <DefaultButton {...hiraganaButtonData}/>
-                <DefaultButton {...katakanaButtonData}/>
+
+                {translationButtons}
             </View>
         );
     }
 
+    buildTranslationButtons() {
+        return Object.keys(this.props.translations).map((key, idx) => {
+            const data = {
+                    key: idx,
+                    id: key,
+                    title: key,
+                    value: this.props.translations[key],
+                    handlePressButton: this.handlePressButton,
+                }
+            
+            return <DefaultButton {...data}/>
+        });
+    }
+
     handlePressButton(data) {
-        const translationValue = data.id;
+        const translationValue = data.value;
 
         this.setState({
             translation: translationValue
         });
-    }
-
-    buildTranslation() {
-        let translation = '';
-
-        if (this.state.translation === 'hiragana') {
-            translation = 'Sumimasen';
-        } else {
-
-        }
-
-        // console.log(this.state.translation);
-
-        return translation;
     }
 }
 
