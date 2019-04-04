@@ -9,6 +9,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import FlashCard from './components/FlashCards/FlashCard';
+import Lesson1Data from './response/Lesson1.json';
+import DefaultButton from './components/Buttons/DefaultButton';
 
 
 const instructions = Platform.select({
@@ -24,45 +26,52 @@ export default class App extends Component<Props> {
     constructor(props) {
         super(props);
 
+        this.handlePressNextButton = this.handlePressNextButton.bind(this);
+
+        const allIds = Lesson1Data['allIds'];
+
         this.state = {
             test: 'test',
             activeCard: '0001',
-            cards: {
-                "0001": {
-                    "english": "I",
-                    "romaji": "Watashi",
-                    "hiragana": "わたし"
-                },
-                "0002": {
-                    "english": "You",
-                    "romaji": "Anata",
-                    "hiragana": "あなた"
-                }
-            }
-            
+            allIds: allIds,
+            activeId: allIds[0],
+            cardIdx: 0
         }
+        
     }
 
     render() {
         const cardData = {
-                translations: {
-                    "English": "You",
-                    "Romaji": "Anata",
-                    "Hiragana": "あなた"
-                }
+                translations: Lesson1Data.byId[this.state.allIds[this.state.cardIdx]]
+            },
+            nextCardButtonData = {
+                title: '->',
+                handlePressButton: this.handlePressNextButton
             }
-            
+
         return (
             <View style={styles.container}>
                 {/* <Text style={styles.welcome}>Hello, World!</Text>
-                <Text style={styles.welcome}>1) react-native start</Text>
+                <Text style={styles.welcome}>1) react-native start (Looks like not necessary)</Text>
                 <Text style={styles.welcome}>2) react-native run-android</Text>
                 <Text style={styles.welcome}>2) react-native log-android</Text>
-                <Text style={styles.instructions}>{instructions}</Text> */}
+                <Text style={styles.instructions}>{instructions}</Text> 
+                https://stackoverflow.com/questions/53279182/vscode-imports-import-console-requireconsole-automatically
+                */}
 
                 <FlashCard {...cardData}/>
+                <DefaultButton {...nextCardButtonData}/>
             </View>
         );
+    }
+
+    handlePressNextButton() {
+        const incrementedValue = this.state.cardIdx + 1,
+            newCardIdx = incrementedValue < this.state.allIds.length ? incrementedValue : 0;
+        
+        this.setState({
+            cardIdx: newCardIdx
+        });
     }
 }
 
