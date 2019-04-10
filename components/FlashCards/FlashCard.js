@@ -21,6 +21,14 @@ export default class FlashCard extends Component<Props> {
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.activeId !== this.props.activeId) {
+            this.setState({
+                translation: ''
+            });
+        }
+    }
+
     render() {
         const translationButtons = this.buildTranslationButtons(),
             translation = this.state.translation;

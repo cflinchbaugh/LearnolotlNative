@@ -31,10 +31,7 @@ export default class App extends Component<Props> {
         const allIds = Lesson1Data['allIds'];
 
         this.state = {
-            test: 'test',
-            activeCard: '0001',
             allIds: allIds,
-            activeId: allIds[0],
             cardIdx: 0
         }
         
@@ -42,7 +39,8 @@ export default class App extends Component<Props> {
 
     render() {
         const cardData = {
-                translations: Lesson1Data.byId[this.state.allIds[this.state.cardIdx]]
+                translations: Lesson1Data.byId[this.state.allIds[this.state.cardIdx]],
+                activeId: this.state.allIds[this.state.cardIdx]
             },
             nextCardButtonData = {
                 title: '->',
