@@ -7,10 +7,10 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import FlashCard from './components/FlashCards/FlashCard';
-import Lesson1Data from './response/Lesson1.json';
-import DefaultButton from './components/Buttons/DefaultButton';
+import {Platform, Text, View} from 'react-native';
+import styled from 'styled-components/native';
+
+import FlashCards from './screens/FlashCards';
 
 
 const instructions = Platform.select({
@@ -20,35 +20,30 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+const AppWrapper = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 20px;
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+
+`
+
 type Props = {};
 
 export default class App extends Component<Props> {
     constructor(props) {
         super(props);
 
-        this.handlePressNextButton = this.handlePressNextButton.bind(this);
-
-        const allIds = Lesson1Data['allIds'];
-
-        this.state = {
-            allIds: allIds,
-            cardIdx: 0
-        }
         
     }
 
     render() {
-        const cardData = {
-                translations: Lesson1Data.byId[this.state.allIds[this.state.cardIdx]],
-                activeId: this.state.allIds[this.state.cardIdx]
-            },
-            nextCardButtonData = {
-                title: '->',
-                handlePressButton: this.handlePressNextButton
-            }
-
         return (
-            <View style={styles.container}>
+            <AppWrapper>
                 {/* <Text style={styles.welcome}>Hello, World!</Text>
                 <Text style={styles.welcome}>1) react-native start (Looks like not necessary)</Text>
                 <Text style={styles.welcome}>2) react-native run-android</Text>
@@ -57,37 +52,11 @@ export default class App extends Component<Props> {
                 https://stackoverflow.com/questions/53279182/vscode-imports-import-console-requireconsole-automatically
                 */}
 
-                <FlashCard {...cardData}/>
-                <DefaultButton {...nextCardButtonData}/>
-            </View>
+                <FlashCards />
+               
+            </AppWrapper>
         );
     }
 
-    handlePressNextButton() {
-        const incrementedValue = this.state.cardIdx + 1,
-            newCardIdx = incrementedValue < this.state.allIds.length ? incrementedValue : 0;
-        
-        this.setState({
-            cardIdx: newCardIdx
-        });
-    }
+  
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});

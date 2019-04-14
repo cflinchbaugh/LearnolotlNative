@@ -6,8 +6,30 @@ import {
     View
 } from 'react-native';
 import DefaultButton from '../Buttons/DefaultButton';
+import styled from 'styled-components/native';
 
 type Props = {};
+
+
+const FlashCardWrapper = styled.View`
+    flex: 1;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+`
+const StyledTranslation = styled.Text`
+    font-size: 50px;
+    text-align: center;
+`
+
+const ButtonWrapper = styled.View`
+    margin: 10px;
+`
+
+const TransationButtonsWrapper = styled.View`
+    flex: 1;
+    justify-content: flex-end;
+`
 
 export default class FlashCard extends Component<Props> {
     constructor(props) {
@@ -34,25 +56,30 @@ export default class FlashCard extends Component<Props> {
             translation = this.state.translation;
 
         return (
-            <View>
-                <Text>{translation}</Text>
-
-                {translationButtons}
-            </View>
+            <FlashCardWrapper>
+                <StyledTranslation>{translation}</StyledTranslation>
+                
+                <TransationButtonsWrapper>
+                    {translationButtons}
+                </TransationButtonsWrapper>
+            </FlashCardWrapper>
         );
     }
 
     buildTranslationButtons() {
         return Object.keys(this.props.translations).map((key, idx) => {
             const data = {
-                    key: idx,
                     id: key,
                     title: key,
                     value: this.props.translations[key],
                     handlePressButton: this.handlePressButton,
                 }
             
-            return <DefaultButton {...data}/>
+            return (
+                <ButtonWrapper key={key}>
+                    <DefaultButton {...data}/>
+                </ButtonWrapper>
+            )
         });
     }
 
@@ -64,7 +91,3 @@ export default class FlashCard extends Component<Props> {
         });
     }
 }
-
-const styles = StyleSheet.create({
-  
-});
