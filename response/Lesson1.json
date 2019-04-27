@@ -1,0 +1,15 @@
+{
+    "byId": {
+        "0001": {
+            "english": "I",
+            "romaji": "Watashi",
+            "hiragana": "わたし"
+        },
+        "0002": {
+            "english": "You",
+            "romaji": "Anata",
+            "hiragana": "あなた"
+        }
+    },
+    "allIds": ["0001", "0002"]
+}

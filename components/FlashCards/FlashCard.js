@@ -6,74 +6,88 @@ import {
     View
 } from 'react-native';
 import DefaultButton from '../Buttons/DefaultButton';
+import styled from 'styled-components/native';
 
 type Props = {};
+
+
+const FlashCardWrapper = styled.View`
+    flex: 1;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+`
+const StyledTranslation = styled.Text`
+    font-size: 50px;
+    text-align: center;
+`
+
+const ButtonWrapper = styled.View`
+    margin: 10px;
+`
+
+const TransationButtonsWrapper = styled.View`
+    flex: 1;
+    justify-content: flex-end;
+`
 
 export default class FlashCard extends Component<Props> {
     constructor(props) {
         super(props);
 
+        this.buildTranslationButtons = this.buildTranslationButtons.bind(this);
         this.handlePressButton = this.handlePressButton.bind(this);
-        this.buildTranslation = this.buildTranslation.bind(this);
         
         this.state = {
-            label: 'english',
             translation: ''    
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.activeId !== this.props.activeId) {
+            this.setState({
+                translation: ''
+            });
+        }
+    }
+
     render() {
-        const romajiButtonData = {
-                id: 'romaji',
-                title: 'Romaji',
-                handlePressButton: this.handlePressButton,
-            },
-            hiraganaButtonData = {
-                id: 'hiragana',
-                title: 'Hiragana',
-                handlePressButton: this.handlePressButton,
-            },
-            katakanaButtonData = {
-                id: 'katakana',
-                title: 'Katakana',
-                handlePressButton: this.handlePressButton,
-            },
-            translation = this.buildTranslation()
+        const translationButtons = this.buildTranslationButtons(),
+            translation = this.state.translation;
 
         return (
-            <View>
-                <Text>Excuse me</Text>
-                <Text>{translation}</Text>
-                <DefaultButton {...romajiButtonData}/>
-                <DefaultButton {...hiraganaButtonData}/>
-                <DefaultButton {...katakanaButtonData}/>
-            </View>
+            <FlashCardWrapper>
+                <StyledTranslation>{translation}</StyledTranslation>
+                
+                <TransationButtonsWrapper>
+                    {translationButtons}
+                </TransationButtonsWrapper>
+            </FlashCardWrapper>
         );
     }
 
+    buildTranslationButtons() {
+        return Object.keys(this.props.translations).map((key, idx) => {
+            const data = {
+                    id: key,
+                    title: key,
+                    value: this.props.translations[key],
+                    handlePressButton: this.handlePressButton,
+                }
+            
+            return (
+                <ButtonWrapper key={key}>
+                    <DefaultButton {...data}/>
+                </ButtonWrapper>
+            )
+        });
+    }
+
     handlePressButton(data) {
-        const translationValue = data.id;
+        const translationValue = data.value;
 
         this.setState({
             translation: translationValue
         });
     }
-
-    buildTranslation() {
-        let translation = '';
-
-        if (this.state.translation === 'hiragana') {
-            translation = 'Sumimasen';
-        } else {
-
-        }
-
-        // console.log(this.state.translation);
-
-        return translation;
-    }
 }
-
-const styles = StyleSheet.create({
-  
-});
